@@ -4,7 +4,7 @@ setup(
     name='Crowd-counting',
     version='0.1',
     packages=find_packages(exclude=['tests*']),
-    license='LGPL',
+    license='MIT',
     description='A package for crowd-counting in Uclouvain auditorium',
     long_description=open('README.txt').read(),
     install_requires=['numpy'],
