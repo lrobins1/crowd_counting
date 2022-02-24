@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: Crowd-counting
+Version: 0.1
+Summary: A package for crowd-counting in Uclouvain auditorium
+Home-page: https://github.com/lrobins1/crowd_counting
+Author: Henri Collin & Louis Robins
+Author-email: henri.collin@student.uclouvain.be & louis.robins@tudent.uclouvain.be
+License: MIT
+Description: # crowd_counting
+Platform: UNKNOWN

@@ -1,0 +1,13 @@
+README.md
+setup.py
+Crowd-counting/__init__.py
+Crowd-counting/dataset.py
+Crowd-counting/image.py
+Crowd-counting/model.py
+Crowd-counting/train.py
+Crowd-counting/utils.py
+Crowd_counting.egg-info/PKG-INFO
+Crowd_counting.egg-info/SOURCES.txt
+Crowd_counting.egg-info/dependency_links.txt
+Crowd_counting.egg-info/requires.txt
+Crowd_counting.egg-info/top_level.txt

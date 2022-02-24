@@ -6,7 +6,7 @@ setup(
     packages=find_packages(exclude=['tests*']),
     license='MIT',
     description='A package for crowd-counting in Uclouvain auditorium',
-    long_description=open('README.txt').read(),
+    long_description=open('README.md').read(),
     install_requires=['numpy'],
     url='https://github.com/lrobins1/crowd_counting',
     author='Henri Collin & Louis Robins',
