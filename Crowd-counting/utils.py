@@ -15,4 +15,6 @@ def load_net(fname, net):
 def save_checkpoint(state, is_best,task_id, filename='/content/gdrive/My Drive/TFE crowd counting/CSRNet-pytorch/checkpoint.pth.tar'):
     torch.save(state, filename)
     if is_best:
-        shutil.copyfile(filename,'/content/gdrive/My Drive/TFE crowd counting/CSRNet-pytorch/model_best.pth.tar')            
+        shutil.copyfile(filename,'/content/gdrive/My Drive/TFE crowd counting/CSRNet-pytorch/model_best.pth.tar')
+        
+        
