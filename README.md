@@ -1,4 +1,4 @@
-# crowd_counting
+# Crowd Counting
 Crowd_counting is a python library to train and use your own crowd counting models.
 
 ## 1) Training dataset 
