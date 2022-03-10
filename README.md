@@ -1,7 +1,7 @@
 # Crowd Counting
 Crowd_counting is a python library to train and use your own crowd counting models.
 <p align="center">
-<img src="https://github.com/lrobins1/crowd_counting/assets/counting_exemple.png" height="128px">
+<img src="assets/lrobins1/crowd_counting/assets/counting_exemple.png" height="128px">
 </p>
 
 
