@@ -49,7 +49,7 @@ class CSRNet(nn.Module):
             elif isinstance(m, nn.Linear):
                 nn.init.normal_(m.weight, 0, 0.01)
                 nn.init.constant_(m.bias, 0)
-                
+            
 def make_layers(cfg, in_channels = 3,batch_norm=False,dilation = False):
     if dilation:
         d_rate = 2

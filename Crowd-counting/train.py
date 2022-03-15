@@ -225,6 +225,82 @@ class AverageMeter(object):
         self.sum += val * n
         self.count += n
         self.avg = self.sum / self.count    
+
+class arg:
+  def __init__(self):
+    self.x = 3
+#Autre fonction que MSELOSS ou autre optimizer que SGD peuvent etre implémentés
+def complete_train(datasetpath, modelpath = None, shuffle = True, gpu = True, init_lr = 1e-7, batch_size = 1, momentum = 0.95, decay = 5*1e-4,epochs = 400, workers = 4):
+    global args,best_prec1
     
+    best_prec1 = 1e6
+    args = arg()
+    args.original_lr = init_lr
+    args.lr = 1e-7
+    args.batch_size    = batch_size
+    args.gpu = gpu
+    args.momentum      = momentum
+    args.decay         = decay
+    args.start_epoch   = 0
+    args.epochs = epochs
+    args.steps         = [-1,1,100,150]
+    args.scales        = [1,1,1,1]
+    args.workers = workers
+    args.seed = time.time()
+    args.print_freq = 30
+
+    for json_path in glob.glob(os.path.join(datasetpath, '*.jpg')):
+        json_paths.append(json_path)
+    if shuffle:
+      random.shuffle(json_paths)
+    l =int(3/4 * len(json_paths))
+    train_list = json_paths[:l]
+    val_list = json_paths[l:]
+    
+    #os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
+    #torch.cuda.manual_seed(args.seed)
+    
+    model = CSRNet()
+    
+    model = model.cuda()
+    
+    criterion = nn.MSELoss(size_average=False).cuda()
+    
+    optimizer = torch.optim.SGD(model.parameters(), args.lr,
+                                momentum=args.momentum,
+                                weight_decay=args.decay)
+
+    if modelpath is not None:
+        if os.path.isfile(modelpath):
+            print("=> loading checkpoint '{}'".format(args.pre))
+            checkpoint = torch.load(args.pre)
+            args.start_epoch = checkpoint['epoch']
+            best_prec1 = checkpoint['best_prec1']
+            model.load_state_dict(checkpoint['state_dict'])
+            optimizer.load_state_dict(checkpoint['optimizer'])
+            print("=> loaded checkpoint '{}' (epoch {})"
+                  .format(args.pre, checkpoint['epoch']))
+        else:
+            print("=> no checkpoint found at '{}'".format(args.pre))
+ 
+    for epoch in range(args.start_epoch, args.epochs):
+        
+        adjust_learning_rate(optimizer, epoch)
+        
+        train(train_list, model, criterion, optimizer, epoch)
+        prec1 = validate(val_list, model, criterion)
+        
+        is_best = prec1 < best_prec1
+        best_prec1 = min(prec1, best_prec1)
+        print(' * best MAE {mae:.3f} '
+              .format(mae=best_prec1))
+        save_checkpoint({
+            'epoch': epoch + 1,
+            'arch': args.pre,
+            'state_dict': model.state_dict(),
+            'best_prec1': best_prec1,
+            'optimizer' : optimizer.state_dict(),
+        }, is_best,args.task)
+        
 if __name__ == '__main__':
     main()        

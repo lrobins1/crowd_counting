@@ -34,7 +34,7 @@ def gaussian_filter_density(gt):
     return density
     
 
-#Method to generate h5 ground_truth file based on the paths to the images file
+#Generate h5 ground_truth file based on the paths to the images file as explained in the paper
 #Crowded = False -> Usage of only gaussian // Crowded = True -> Usage of geometric adaptive kernel
 
 def gt_gen(img_paths, crowded = True ,Verbose = False):
