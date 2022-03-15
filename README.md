@@ -29,4 +29,4 @@ Run the models on new images to have a reliable density map and the estimation o
 
 ## Bonus : Export your model to json using [tensorflowjs](https://github.com/tensorflow/tfjs/tree/master/tfjs-converter)  to use is in https://our_website.com for crowd counting 
 
-<a href="https://colab.research.google.com/github/lrobins1/crowd_counting/blob/main/exemples/Conversion_to_JS.ipynb"
+<a href="https://colab.research.google.com/github/lrobins1/crowd_counting/blob/main/exemples/Conversion_to_JS.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
