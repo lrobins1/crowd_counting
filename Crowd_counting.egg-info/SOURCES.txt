@@ -1,7 +1,9 @@
 README.md
 setup.py
 Crowd-counting/__init__.py
+Crowd-counting/augmentation.py
 Crowd-counting/dataset.py
+Crowd-counting/ground_truth.py
 Crowd-counting/image.py
 Crowd-counting/model.py
 Crowd-counting/train.py

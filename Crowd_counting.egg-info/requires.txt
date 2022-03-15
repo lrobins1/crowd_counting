@@ -1,1 +1,10 @@
 numpy
+tensorflow
+cv2
+os
+scipy
+random
+h5py
+PIL
+json
+warnings
