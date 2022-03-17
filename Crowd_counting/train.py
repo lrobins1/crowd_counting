@@ -5,7 +5,7 @@ import warnings
 
 from model import CSRNet
 
-from utils import save_checkpoint
+from .utils import save_checkpoint
 
 import torch
 import torch.nn as nn

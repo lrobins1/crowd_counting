@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='Crowd_counting',
-    version='0.4',
+    version='0.5',
     packages=find_packages(exclude=['tests*']),
     license='MIT',
     description='A package for crowd-counting in Uclouvain auditorium',

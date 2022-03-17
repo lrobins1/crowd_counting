@@ -6,7 +6,7 @@ import glob
 from scipy.ndimage.filters import gaussian_filter 
 import scipy
 from scipy import spatial
-from image import *
+from .image import *
 
 #this is borrowed from https://github.com/davideverona/deep-crowd-counting_crowdnet
 #This function create the density by using adaptive kernels
