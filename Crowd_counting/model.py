@@ -4,6 +4,7 @@ from torchvision import models
 from .utils import save_net,load_net
 import torch.nn.functional as F
 import torchvision
+import PIL.Image as Image
 
 class CSRNet(nn.Module):
     def __init__(self, load_weights=True):
@@ -84,3 +85,17 @@ def load_model(model_path, use_gpu = False):
   checkpoint = torch.load(model_path)
   model.load_state_dict(checkpoint['state_dict'])
   return model
+  
+  
+#To plot the image density map from the output, use : 
+#plt.imshow(np.squeeze(output.detach().cpu().numpy(),(0,1)),cmap=CM.jet)
+def predict(model,image_path, use_gpu = True):
+  from torchvision import datasets, transforms
+  transform=transforms.Compose([
+                        transforms.ToTensor(),transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                      std=[0.229, 0.224, 0.225]),
+                    ])
+  img = transform(Image.open(image_path).convert('RGB')).cuda()
+  output = model(img.unsqueeze(0))
+  people_nbr = int(output.detach().cpu().sum().numpy())
+  return people_nbr, output  
