@@ -67,3 +67,20 @@ def make_layers(cfg, in_channels = 3,batch_norm=False,dilation = False):
                 layers += [conv2d, nn.ReLU(inplace=True)]
             in_channels = v
     return nn.Sequential(*layers)
+    
+#return the loaded model located at model_path (or the basic shangai partAmodel if no path is given ) 
+#using gpu or using cpu (if the use_gpu parameter is set to False)
+def load_model(model_path, use_gpu = False):
+  from torchvision import datasets, transforms
+  transform=transforms.Compose([
+                        transforms.ToTensor(),transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                      std=[0.229, 0.224, 0.225]),
+                    ])
+  model = CSRNet()
+  if use_gpu:
+    model = model.cuda()
+  else:
+    model = model.cpu()
+  checkpoint = torch.load(model_path)
+  model.load_state_dict(checkpoint['state_dict'])
+  return model
