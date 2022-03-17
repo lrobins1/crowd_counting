@@ -1,7 +1,6 @@
 import h5py
 import torch
 import shutil
-from .model import CSRNet
 
 def save_net(fname, net):
     with h5py.File(fname, 'w') as h5f:
