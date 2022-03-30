@@ -109,7 +109,7 @@ def dir_to_list(img_dir,img_format ='jpg'):
     if img_format == 'png':
       for img_path in glob.glob(os.path.join(img_dir, '*.png')):
           img_paths.append(img_path)
-          GT_path = img_path.replace('images','ground_truth').replace('.png','.mat')
+          GT_path = img_path.replace('images','ground_truth').replace('.png','.mat').replace('A10','GT_A10')
           GT_paths.append(GT_path)
     
     return img_paths, GT_paths
