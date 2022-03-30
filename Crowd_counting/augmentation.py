@@ -53,10 +53,10 @@ def brightness_variation(img_paths,GT_paths,register = True, img_format = 'jpg')
     #save image
     if register == True:
       if img_format == 'jpg':
-        filename = img_path.replace('.jpg','_brightchange.jpg')
+        filename = img_path.replace('.jpg','_bright.jpg')
       if img_format == 'png':
-        filename = img_path.replace('.png','_brightchange.png')
-    matname = GT_path.replace('.mat','_brightchange.mat')
+        filename = img_path.replace('.png','_bright.png')
+    matname = GT_path.replace('.mat','_bright.mat')
     cv2.imwrite(filename, new_im)
     io.savemat(matname, mat)
 
@@ -81,11 +81,11 @@ def reverse_and_bright(img_paths,GT_paths,register = True,img_format = 'jpg'):
 
       if register==True:
         if img_format == 'jpg':
-          filename = img_path.replace('.jpg','r_and_b.jpg')
+          filename = img_path.replace('.jpg','_combine.jpg')
         if img_format == 'png':
-          filename = img_path.replace('.png','r_and_b.png')
+          filename = img_path.replace('.png','_combine.png')
         
-        matname = GT_path.replace('.mat','r_and_b.mat')
+        matname = GT_path.replace('.mat','_combine.mat')
         cv2.imwrite(filename, new_im)
         io.savemat(matname, mat)
 
@@ -95,7 +95,7 @@ def full_augment(img_paths,GT_paths, img_format = 'jpg'):
   reverse_and_bright(img_paths,GT_paths,img_format = img_format)
 
 
-def dir_to_list(img_dir,GT_dir,img_format ='jpg'):
+def dir_to_list(img_dir,img_format ='jpg'):
     img_paths = []
     GT_paths = []
     
@@ -103,12 +103,13 @@ def dir_to_list(img_dir,GT_dir,img_format ='jpg'):
     if img_format == 'jpg':
       for img_path in glob.glob(os.path.join(img_dir, '*.jpg')):
           img_paths.append(img_path)
+          GT_path = img_path.replace('images','ground_truth')
+          GT_paths.append(GT_path)
     
     if img_format == 'png':
       for img_path in glob.glob(os.path.join(img_dir, '*.png')):
           img_paths.append(img_path)
-    #GT into list
-    for GT_path in glob.glob(os.path.join(GT_dir, '*.mat')):
-        GT_paths.append(GT_path)
+          GT_path = img_path.replace('images','ground_truth')
+          GT_paths.append(GT_path)
     
     return img_paths, GT_paths
