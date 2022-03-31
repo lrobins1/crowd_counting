@@ -20,6 +20,8 @@ import dataset
 import time
 import glob
 
+#améliorer : attention aux paths pour save les models
+
 parser = argparse.ArgumentParser(description='PyTorch CSRNet')
 
 parser.add_argument('train_json', metavar='TRAIN',
@@ -233,7 +235,7 @@ class arg:
   def __init__(self):
     self.x = 3
 #Autre fonction que MSELOSS ou autre optimizer que SGD peuvent etre implémentés
-def complete_train(datasetpath, modelpath = None, shuffle = True, gpu = True, init_lr = 1e-7, batch_size = 1, momentum = 0.95, decay = 5*1e-4,epochs = 400, workers = 4):
+def complete_train(datasetpath, modelpath = None, shuffle = True, gpu = True, init_lr = 1e-7, batch_size = 1, momentum = 0.95, decay = 5*1e-4,epochs = 400, workers = 4, img_format = '*.png'):
     global args,best_prec1
     
     best_prec1 = 1e6
@@ -251,8 +253,9 @@ def complete_train(datasetpath, modelpath = None, shuffle = True, gpu = True, in
     args.workers = workers
     args.seed = time.time()
     args.print_freq = 30
-
-    for json_path in glob.glob(os.path.join(datasetpath, '*.jpg')):
+    
+    json_paths = []
+    for json_path in glob.glob(os.path.join(datasetpath, img_format)):
         json_paths.append(json_path)
     if shuffle:
       random.shuffle(json_paths)
