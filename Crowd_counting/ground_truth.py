@@ -37,10 +37,14 @@ def gaussian_filter_density(gt):
 #Generate h5 ground_truth file based on the paths to the images file as explained in the paper
 #Crowded = False -> Usage of only gaussian // Crowded = True -> Usage of geometric adaptive kernel
 
-def gt_gen(img_paths, crowded = True ,Verbose = False):
+def gt_gen(img_paths, crowded = True ,Verbose = False, img_format = 'jpg'):
   count=0
+  if img_format == 'jpg':
+    form = '.jpg'
+  else:
+    form = '.png'
   for img_path in img_paths:
-      mat = io.loadmat(img_path.replace('.jpg','.mat').replace('images','ground_truth').replace('IMG_','GT_IMG_'))
+      mat = io.loadmat(img_path.replace(form,'.mat').replace('images','ground_truth').replace('IMG_','GT_IMG_'))
       img= plt.imread(img_path)
       k = np.zeros((img.shape[0],img.shape[1]))
       gt = mat["image_info"][0,0][0,0][0]
@@ -56,7 +60,7 @@ def gt_gen(img_paths, crowded = True ,Verbose = False):
         k = gaussian_filter(k,15)
 
 
-      with h5py.File(img_path.replace('.jpg','.h5').replace('images','ground_truth'), 'w') as hf:
+      with h5py.File(img_path.replace(form,'.h5').replace('images','ground_truth'), 'w') as hf:
               hf['density'] = k
       if Verbose:
         print("image "+str(count) + "/" + str(len(img_paths))+ " done")
