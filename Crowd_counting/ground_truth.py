@@ -44,7 +44,7 @@ def gt_gen(img_paths, crowded = True ,Verbose = False, img_format = 'jpg'):
   else:
     form = '.png'
   for img_path in img_paths:
-      mat = io.loadmat(img_path.replace(form,'.mat').replace('images','ground_truth').replace('IMG_','GT_IMG_'))
+      mat = io.loadmat(img_path.replace(form,'.mat').replace('images','ground_truth').replace('A10_','GT_A10_'))
       img= plt.imread(img_path)
       k = np.zeros((img.shape[0],img.shape[1]))
       gt = mat["image_info"][0,0][0,0][0]
