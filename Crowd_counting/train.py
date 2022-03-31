@@ -234,7 +234,7 @@ class AverageMeter(object):
 
 class arg:
   def __init__(self):
-    self.x = 3
+    self.task = '0'
 #Autre fonction que MSELOSS ou autre optimizer que SGD peuvent etre implémentés
 def complete_train(datasetpath, modelpath = None, shuffle = True, gpu = True, init_lr = 1e-7, batch_size = 1, momentum = 0.95, decay = 5*1e-4,epochs = 400, workers = 4, img_format = '*.png'):
     global args,best_prec1
