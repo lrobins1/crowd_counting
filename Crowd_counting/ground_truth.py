@@ -39,7 +39,7 @@ def gaussian_filter_density(gt):
 #Crowded = False -> Usage of only gaussian // Crowded = True -> Usage of geometric adaptive kernel
 
 def gt_gen(img_paths, crowded = True ,Verbose = False, img_format = 'jpg'):
-  count=0
+  count=1
   if img_format == 'jpg':
     form = '.jpg'
   else:

@@ -5,6 +5,9 @@ from .utils import save_net,load_net
 import torch.nn.functional as F
 import torchvision
 import PIL.Image as Image
+from matplotlib import pyplot as plt
+from .image import *
+from matplotlib import cm as CM
 
 class CSRNet(nn.Module):
     def __init__(self, load_weights=True):
@@ -98,4 +101,42 @@ def predict(model,image_path, use_gpu = True):
   img = transform(Image.open(image_path).convert('RGB')).cuda()
   output = model(img.unsqueeze(0))
   people_nbr = int(output.detach().cpu().sum().numpy())
-  return people_nbr, output  
+  return people_nbr, output 
+  
+#amelioration : take lists 
+#imag = PIL image or path to image
+def visualize(image, ground_truth = None, model = None, figsize = (100,100)):
+
+  if isinstance(image, str):
+    image = Image.open(image)
+  
+  if isinstance(ground_truth, str):
+    gt_file = h5py.File(ground_truth)
+  else: 
+    gt_file = ground_truth
+
+  count = 1 #number of things to plot :
+  if ground_truth is not None:
+    count+=1
+    gt = np.asarray(gt_file['density'])
+  if model is not None:
+    count+=1
+    people_nbr, output = predict(model,image)
+
+  plt.figure(figsize = figsize)
+  plt.subplot(1,count,1)
+  plt.axis('off')
+  plt.imshow(image)
+  plt.title("Base Image", fontsize=75)
+
+  if ground_truth is not None: 
+    plt.subplot(1,count,2)
+    plt.axis('off')
+    plt.imshow(gt,cmap=CM.jet)
+    plt.title("Groundtruth : " + str(int(np.sum(gt))), fontsize=75)
+  
+  if model is not None:
+    plt.subplot(1,count,count)
+    plt.axis('off')
+    plt.imshow(np.squeeze(output.detach().cpu().numpy(),(0,1)),cmap=CM.jet)
+    plt.title("Model prediction : " + str(people_nbr), fontsize=75)
