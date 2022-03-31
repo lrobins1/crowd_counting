@@ -19,6 +19,7 @@ import cv2
 import dataset
 import time
 import glob
+import random
 
 #améliorer : attention aux paths pour save les models
 
