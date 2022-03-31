@@ -87,9 +87,9 @@ def main():
  
     for epoch in range(args.start_epoch, args.epochs):
         
-        adjust_learning_rate(optimizer, epoch)
+        args = adjust_learning_rate(optimizer, epoch,args,best_prec1)
         
-        train(train_list, model, criterion, optimizer, epoch)
+        train(train_list, model, criterion, optimizer, epoch, args, best_prec1)
         prec1 = validate(val_list, model, criterion)
         
         is_best = prec1 < best_prec1
@@ -104,7 +104,7 @@ def main():
             'optimizer' : optimizer.state_dict(),
         }, is_best,args.task)
 
-def train(train_list, model, criterion, optimizer, epoch):
+def train(train_list, model, criterion, optimizer, epoch, args, best_prec1):
     
     losses = AverageMeter()
     batch_time = AverageMeter()
@@ -189,7 +189,7 @@ def validate(val_list, model, criterion):
 
     return mae    
         
-def adjust_learning_rate(optimizer, epoch):
+def adjust_learning_rate(optimizer, epoch,args,best_prec1):
     """Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
     
     
@@ -208,6 +208,8 @@ def adjust_learning_rate(optimizer, epoch):
             break
     for param_group in optimizer.param_groups:
         param_group['lr'] = args.lr
+        
+    return args
         
 class AverageMeter(object):
     """Computes and stores the average and current value"""
@@ -285,9 +287,9 @@ def complete_train(datasetpath, modelpath = None, shuffle = True, gpu = True, in
  
     for epoch in range(args.start_epoch, args.epochs):
         
-        adjust_learning_rate(optimizer, epoch)
+        args = adjust_learning_rate(optimizer, epoch,args, best_prec1)
         
-        train(train_list, model, criterion, optimizer, epoch)
+        train(train_list, model, criterion, optimizer, epoch, args, best_prec1)
         prec1 = validate(val_list, model, criterion)
         
         is_best = prec1 < best_prec1

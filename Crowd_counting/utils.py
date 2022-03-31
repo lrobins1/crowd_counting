@@ -12,9 +12,9 @@ def load_net(fname, net):
             param = torch.from_numpy(np.asarray(h5f[k]))         
             v.copy_(param)
             
-def save_checkpoint(state, is_best,task_id, filename='/content/gdrive/My Drive/TFE crowd counting/CSRNet-pytorch/checkpoint.pth.tar'):
+def save_checkpoint(state, is_best,task_id, filename='/content/gdrive/My Drive/TFE_crowd_counting/CSRNet-pytorch/checkpoint.pth.tar'):
     torch.save(state, filename)
     if is_best:
-        shutil.copyfile(filename,'/content/gdrive/My Drive/TFE crowd counting/CSRNet-pytorch/model_best.pth.tar')
+        shutil.copyfile(filename,'/content/gdrive/My Drive/TFE_crowd_counting/CSRNet-pytorch/model_best.pth.tar')
         
        
