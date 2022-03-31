@@ -254,6 +254,8 @@ def complete_train(datasetpath, modelpath = None, shuffle = True, gpu = True, in
     args.workers = workers
     args.seed = time.time()
     args.print_freq = 30
+    args.pre = modelpath
+    
     
     json_paths = []
     for json_path in glob.glob(os.path.join(datasetpath, img_format)):
