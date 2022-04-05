@@ -4,6 +4,8 @@ setup(
     name='Crowd_counting',
     version='0.6',
     packages=find_packages(exclude=['tests*']),
+    package_dir={'Crowd_counting': 'Crowd_counting'},
+    package_data={'Crowd_counting': ['data/*.tar']},
     include_package_data=True,
     license='MIT',
     description='A package for crowd-counting in Uclouvain auditorium',

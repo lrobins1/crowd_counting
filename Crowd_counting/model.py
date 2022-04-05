@@ -9,6 +9,8 @@ from matplotlib import pyplot as plt
 from .image import *
 from matplotlib import cm as CM
 
+import pkg_resources
+
 class CSRNet(nn.Module):
     def __init__(self, load_weights=True):
         super(CSRNet, self).__init__()
@@ -90,7 +92,8 @@ def load_model(model_path, use_gpu = True):
   return model
  
 def load_best():
-    return load_model("data/PartAmodel_best.pth.tar")
+    model_path = pkg_resources.resource_filename('Crowd_counting', 'data/PartAmodel_best.pth.tar')
+    return load_model(model_path)
     
   
 #To plot the image density map from the output, use : 
