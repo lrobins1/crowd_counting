@@ -90,7 +90,7 @@ def load_model(model_path, use_gpu = True):
   return model
  
 def load_best():
-    return load_model("./data/PartAmodel_best.pth.tar")
+    return load_model("data/PartAmodel_best.pth.tar")
     
   
 #To plot the image density map from the output, use : 
