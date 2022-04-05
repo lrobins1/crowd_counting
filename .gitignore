@@ -1,2 +1,6 @@
-
 Untitled.ipynb
+
+# Distribution / packaging
+/dist/
+/*.egg-info
+/*.egg
