@@ -8,7 +8,7 @@ import PIL.Image as Image
 from matplotlib import pyplot as plt
 from .image import *
 from matplotlib import cm as CM
-
+from torchvision import datasets, transforms
 import pkg_resources
 
 class CSRNet(nn.Module):
@@ -77,7 +77,6 @@ def make_layers(cfg, in_channels = 3,batch_norm=False,dilation = False):
 #return the loaded model located at model_path (or the basic shangai partAmodel if no path is given ) 
 #using gpu or using cpu (if the use_gpu parameter is set to False)
 def load_model(model_path, use_gpu = True):
-  from torchvision import datasets, transforms
   transform=transforms.Compose([
                         transforms.ToTensor(),transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                       std=[0.229, 0.224, 0.225]),
@@ -153,6 +152,10 @@ def evaluate(model,img_paths, MAE=True, MSE=True):
   mae = 0
   mse = 0
   length = len(img_paths)
+  transform=transforms.Compose([
+                        transforms.ToTensor(),transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                      std=[0.229, 0.224, 0.225]),
+                    ])
   for i in range(length):
       img = transform(Image.open(img_paths[i]).convert('RGB')).cuda()
       gt_file = h5py.File(img_paths[i].replace('.png','.h5').replace('images','ground_truth'),'r')
