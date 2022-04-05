@@ -149,7 +149,7 @@ def visualize(image, ground_truth = None, model = None, figsize = (100,100)):
     plt.title("Model prediction : " + str(people_nbr), fontsize=75)
     
 #calculate and print the MAE of the models
-def eval(model,img_paths, MAE=True, MSE=True):
+def evaluate(model,img_paths, MAE=True, MSE=True):
   mae = 0
   mse = 0
   length = len(img_paths)
