@@ -93,6 +93,7 @@ def load_model(model_path, use_gpu = True):
  
 def load_best():
     model_path = pkg_resources.resource_filename('Crowd_counting', 'data/PartAmodel_best.pth.tar')
+    print(model_path)
     return load_model(model_path)
     
   
