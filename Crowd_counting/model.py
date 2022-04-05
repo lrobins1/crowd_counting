@@ -147,3 +147,21 @@ def visualize(image, ground_truth = None, model = None, figsize = (100,100)):
     plt.axis('off')
     plt.imshow(np.squeeze(output.detach().cpu().numpy(),(0,1)),cmap=CM.jet)
     plt.title("Model prediction : " + str(people_nbr), fontsize=75)
+    
+#calculate and print the MAE of the models
+def eval(model,img_paths, MAE=True, MSE=True):
+  mae = 0
+  mse = 0
+  length = len(img_paths)
+  for i in range(length):
+      img = transform(Image.open(img_paths[i]).convert('RGB')).cuda()
+      gt_file = h5py.File(img_paths[i].replace('.png','.h5').replace('images','ground_truth'),'r')
+      groundtruth = np.asarray(gt_file['density'])
+      output = model(img.unsqueeze(0))
+      error = output.detach().cpu().sum().numpy()-np.sum(groundtruth)
+      if MAE:
+        mae += abs(error)
+      if MSE:
+        mse += (error)**2
+      
+  return mae/length, mse/length
