@@ -6,6 +6,7 @@ import warnings
 from .model import CSRNet
 
 from .utils import save_checkpoint
+import .dataset import *
 
 import torch
 import torch.nn as nn
@@ -16,7 +17,7 @@ import numpy as np
 import argparse
 import json
 import cv2
-import .dataset
+
 import time
 import glob
 import random
