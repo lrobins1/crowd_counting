@@ -3,7 +3,7 @@ import os
 
 import warnings
 
-from model import CSRNet
+from .model import CSRNet
 
 from .utils import save_checkpoint
 
