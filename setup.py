@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 """def pull_first():
-    """This script is in a git directory that can be pulled."""
+     script is in a git directory that can be pulled.
     cwd = os.getcwd()
     gitdir = os.path.dirname(os.path.realpath(__file__))
     os.chdir(gitdir)
