@@ -121,15 +121,15 @@ def predict(model,image_path, use_gpu = True):
     """
 
 
-  from torchvision import datasets, transforms
-  transform=transforms.Compose([
+    from torchvision import datasets, transforms
+    transform=transforms.Compose([
                         transforms.ToTensor(),transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                       std=[0.229, 0.224, 0.225]),
                     ])
-  img = transform(Image.open(image_path).convert('RGB')).cuda()
-  output = model(img.unsqueeze(0))
-  people_nbr = int(output.detach().cpu().sum().numpy())
-  return people_nbr, output 
+    img = transform(Image.open(image_path).convert('RGB')).cuda()
+    output = model(img.unsqueeze(0))
+    people_nbr = int(output.detach().cpu().sum().numpy())
+    return people_nbr, output 
   
 #amelioration : take lists 
 #imag = PIL image or path to image
@@ -141,64 +141,64 @@ def visualize(image, ground_truth = None, model = None, figsize = (100,100)):
     """
 
 
-  if isinstance(image, str):
-    image = Image.open(image)
+    if isinstance(image, str):
+      image = Image.open(image)
   
-  if isinstance(ground_truth, str):
-    gt_file = h5py.File(ground_truth)
-  else: 
-    gt_file = ground_truth
+    if isinstance(ground_truth, str):
+      gt_file = h5py.File(ground_truth)
+    else: 
+      gt_file = ground_truth
 
-  count = 1 #number of things to plot :
-  if ground_truth is not None:
-    count+=1
-    gt = np.asarray(gt_file['density'])
-  if model is not None:
-    count+=1
-    people_nbr, output = predict(model,image)
+    count = 1 #number of things to plot :
+    if ground_truth is not None:
+      count+=1
+      gt = np.asarray(gt_file['density'])
+    if model is not None:
+      count+=1
+      people_nbr, output = predict(model,image)
 
-  plt.figure(figsize = figsize)
-  plt.subplot(1,count,1)
-  plt.axis('off')
-  plt.imshow(image)
-  plt.title("Base Image", fontsize=75)
-
-  if ground_truth is not None: 
-    plt.subplot(1,count,2)
+    plt.figure(figsize = figsize)
+    plt.subplot(1,count,1)
     plt.axis('off')
-    plt.imshow(gt,cmap=CM.jet)
-    plt.title("Groundtruth : " + str(int(np.sum(gt))), fontsize=75)
+    plt.imshow(image)
+    plt.title("Base Image", fontsize=75)
+
+    if ground_truth is not None: 
+      plt.subplot(1,count,2)
+      plt.axis('off')
+      plt.imshow(gt,cmap=CM.jet)
+      plt.title("Groundtruth : " + str(int(np.sum(gt))), fontsize=75)
   
-  if model is not None:
-    plt.subplot(1,count,count)
-    plt.axis('off')
-    plt.imshow(np.squeeze(output.detach().cpu().numpy(),(0,1)),cmap=CM.jet)
-    plt.title("Model prediction : " + str(people_nbr), fontsize=75)
-    
+    if model is not None:
+      plt.subplot(1,count,count)
+      plt.axis('off')
+      plt.imshow(np.squeeze(output.detach().cpu().numpy(),(0,1)),cmap=CM.jet)
+      plt.title("Model prediction : " + str(people_nbr), fontsize=75)
+     
 #calculate and print the MAE of the models
 def evaluate(model,img_paths, MAE=True, MSE=True):
-"""
-Compute the MSE-MAE of the model on a designated set of images 
+    """
+    Compute the MSE-MAE of the model on a designated set of images 
 
-:param model: a CSRNet already trained model
-:param list image_paths: paths to the images used for evaluation
-:param bool MAE: If set to False the MAE is not computed
-:param bool MSE: If set to False the MSE is not computed
-
-
-:returns: the MAE of the model (0 if the MAE parameter is set to False)
-:returns: the MSE of the model (0 if the MSE parameter is set to False)
-"""
+    :param model: a CSRNet already trained model
+    :param list image_paths: paths to the images used for evaluation
+    :param bool MAE: If set to False the MAE is not computed
+    :param bool MSE: If set to False the MSE is not computed
 
 
-  mae = 0
-  mse = 0
-  length = len(img_paths)
-  transform=transforms.Compose([
+    :returns: the MAE of the model (0 if the MAE parameter is set to False)
+    :returns: the MSE of the model (0 if the MSE parameter is set to False)
+    """
+
+
+    mae = 0
+    mse = 0
+    length = len(img_paths)
+    transform=transforms.Compose([
                         transforms.ToTensor(),transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                       std=[0.229, 0.224, 0.225]),
                     ])
-  for i in range(length):
+    for i in range(length):
       img = transform(Image.open(img_paths[i]).convert('RGB')).cuda()
       gt_file = h5py.File(img_paths[i].replace('.png','.h5').replace('images','ground_truth'),'r')
       groundtruth = np.asarray(gt_file['density'])
@@ -209,4 +209,4 @@ Compute the MSE-MAE of the model on a designated set of images
       if MSE:
         mse += (error)**2
       
-  return mae/length, mse/length
+    return mae/length, mse/length
