@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-def pull_first():
+"""def pull_first():
     """This script is in a git directory that can be pulled."""
     cwd = os.getcwd()
     gitdir = os.path.dirname(os.path.realpath(__file__))
@@ -12,7 +12,7 @@ def pull_first():
         raise RuntimeError("Make sure git-lfs is installed!")
     os.chdir(cwd)
 
-pull_first()
+pull_first()"""
 
 setup(
     name='Crowd_counting',
