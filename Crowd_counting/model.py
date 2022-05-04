@@ -77,6 +77,16 @@ def make_layers(cfg, in_channels = 3,batch_norm=False,dilation = False):
 #return the loaded model located at model_path (or the basic shangai partAmodel if no path is given ) 
 #using gpu or using cpu (if the use_gpu parameter is set to False)
 def load_model(model_path, use_gpu = True):
+"""
+Load a stored already trained CSRNet model.
+
+:param model_path: the path to the stored model
+:param use_gpu: if the model is loaded on gpu or cpu 
+
+:returns: the loaded model
+:rtype: CSRNet
+"""
+
   transform=transforms.Compose([
                         transforms.ToTensor(),transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                       std=[0.229, 0.224, 0.225]),
@@ -99,6 +109,18 @@ def load_best():
 #To plot the image density map from the output, use : 
 #plt.imshow(np.squeeze(output.detach().cpu().numpy(),(0,1)),cmap=CM.jet)
 def predict(model,image_path, use_gpu = True):
+"""
+Predict the stimated number of people and density map from an image
+
+:param model: a CSRNet already trained model
+:param image_path: path to the image to be predicted
+:param use_gpu: if the model is loaded on gpu or cpu 
+
+:returns: the estimated number of people
+:returns: the estimated density map
+"""
+
+
   from torchvision import datasets, transforms
   transform=transforms.Compose([
                         transforms.ToTensor(),transforms.Normalize(mean=[0.485, 0.456, 0.406],
@@ -112,6 +134,12 @@ def predict(model,image_path, use_gpu = True):
 #amelioration : take lists 
 #imag = PIL image or path to image
 def visualize(image, ground_truth = None, model = None, figsize = (100,100)):
+"""
+Visualize an image and eventually its ground_truth and one model prediction using matplotlib
+
+:param image:
+"""
+
 
   if isinstance(image, str):
     image = Image.open(image)
@@ -149,6 +177,20 @@ def visualize(image, ground_truth = None, model = None, figsize = (100,100)):
     
 #calculate and print the MAE of the models
 def evaluate(model,img_paths, MAE=True, MSE=True):
+"""
+Compute the MSE-MAE of the model on a designated set of images 
+
+:param model: a CSRNet already trained model
+:param list image_paths: paths to the images used for evaluation
+:param bool MAE: If set to False the MAE is not computed
+:param bool MSE: If set to False the MSE is not computed
+
+
+:returns: the MAE of the model (0 if the MAE parameter is set to False)
+:returns: the MSE of the model (0 if the MSE parameter is set to False)
+"""
+
+
   mae = 0
   mse = 0
   length = len(img_paths)
