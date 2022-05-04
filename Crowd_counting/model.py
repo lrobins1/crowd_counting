@@ -100,9 +100,16 @@ def load_model(model_path, use_gpu = True):
     model.load_state_dict(checkpoint['state_dict'])
     return model
  
-def load_best():
-    model_path = pkg_resources.resource_filename('Crowd_counting', 'data/PartAmodel_best.pth.tar')
-    print(model_path)
+def load_pretrained(model_name = 'shangaiA'):
+    """
+    Load one of the already pretrained models of the librairy
+    
+    
+    :param: name of the pretrained model to be charged. Can be shangaiA, shangaiB, A10
+    :returns: the loaded model
+    """
+    actual_name = 'models/' + model_name + '.pth.tar'
+    model_path = pkg_resources.resource_filename('Crowd_counting', actual_name)
     return load_model(model_path)
     
   
