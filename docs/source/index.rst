@@ -15,11 +15,18 @@ The CSRNet model implementation is highly inspired from the `implementation of t
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Guides:
 
    install 
    new_train
    al_train
+
+
+   
+.. toctree::
+   :maxdepth: 2
+   :caption: Modules:
+   
    augmentation
    ground_truth
    train
