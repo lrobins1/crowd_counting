@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data augmentation Module &mdash; Crowd_counting 0.6 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Ground_truth generation Module" href="ground_truth.html" />
+    <link rel="prev" title="Load model and make predictions" href="al_train.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Crowd_counting
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="new_train.html">Train a new model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="al_train.html">Load model and make predictions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Data augmentation Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ground_truth.html">Ground_truth generation Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="train.html">Training Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">Model Module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Crowd_counting</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Data augmentation Module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/augmentation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="module-Crowd_counting.augmentation">
+<span id="data-augmentation-module"></span><span id="rst-augment"></span><h1>Data augmentation Module<a class="headerlink" href="#module-Crowd_counting.augmentation" title="Permalink to this headline">¶</a></h1>
+<p>Set of functions used to perform data augmentation on images and their assosiated .mat files</p>
+<dl class="function">
+<dt id="Crowd_counting.augmentation.Horizontal_Flip">
+<code class="descclassname">Crowd_counting.augmentation.</code><code class="descname">Horizontal_Flip</code><span class="sig-paren">(</span><em>img_paths</em>, <em>GT_paths</em>, <em>register=True</em>, <em>img_format='jpg'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Crowd_counting/augmentation.html#Horizontal_Flip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Crowd_counting.augmentation.Horizontal_Flip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flip a list of images horizontally and change the .mat file assosiated with it, save the new images and ground_truth in the specified directory</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>img_paths</strong> (<em>list</em>) – list of paths to the images to be augmented, as generated by the dir_to_list function</li>
+<li><strong>GT_paths</strong> (<em>list</em>) – list of paths to the Grount truth corresponding to the images to be augmented, as generated by the dir_to_list function</li>
+<li><strong>img_format</strong> – the format of the images, can only take the values ‘png’ and ‘jpg’</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Crowd_counting.augmentation.brightness_variation">
+<code class="descclassname">Crowd_counting.augmentation.</code><code class="descname">brightness_variation</code><span class="sig-paren">(</span><em>img_paths</em>, <em>GT_paths</em>, <em>register=True</em>, <em>img_format='jpg'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Crowd_counting/augmentation.html#brightness_variation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Crowd_counting.augmentation.brightness_variation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the brightness of list of images, save the new images and ground_truth in the specified directory</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>img_paths</strong> (<em>list</em>) – list of paths to the images to be augmented, as generated by the dir_to_list function</li>
+<li><strong>GT_paths</strong> (<em>list</em>) – list of paths to the Grount truth corresponding to the images to be augmented, as generated by the dir_to_list function</li>
+<li><strong>img_format</strong> – the format of the images, can only take the values ‘png’ and ‘jpg’</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Crowd_counting.augmentation.dir_to_list">
+<code class="descclassname">Crowd_counting.augmentation.</code><code class="descname">dir_to_list</code><span class="sig-paren">(</span><em>img_dir</em>, <em>img_format='jpg'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Crowd_counting/augmentation.html#dir_to_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Crowd_counting.augmentation.dir_to_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create lists of paths to the ground truth and images, as to be used for image augmentation, ground truth generation and model training.
+For the list to be created correctly, the directory should have the following form :</p>
+<p>Project</p>
+<blockquote>
+<div><p>+–images</p>
+<blockquote>
+<div><ul class="simple">
+<li>all images</li>
+</ul>
+</div></blockquote>
+<p>+–ground_truth</p>
+<blockquote>
+<div><ul class="simple">
+<li>all .mat files</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>img_dir</strong> (<em>str</em>) – path to the directory where the images are stored</li>
+<li><strong>img_format</strong> – the format of the images, can only take the values ‘png’ and ‘jpg’</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">2 lists: the first one contain the paths to the images, the second one contain the paths to the associated ground truths (the Ground truth at index i correspond to the image at index i in the ifrst list)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Crowd_counting.augmentation.full_augment">
+<code class="descclassname">Crowd_counting.augmentation.</code><code class="descname">full_augment</code><span class="sig-paren">(</span><em>img_paths</em>, <em>GT_paths</em>, <em>img_format='jpg'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Crowd_counting/augmentation.html#full_augment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Crowd_counting.augmentation.full_augment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform the three different transformations on a set of images, save the new images and ground_truth in the specified directory</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>img_paths</strong> (<em>list</em>) – list of paths to the images to be augmented, as generated by the dir_to_list function</li>
+<li><strong>GT_paths</strong> (<em>list</em>) – list of paths to the Grount truth corresponding to the images to be augmented, as generated by the dir_to_list function</li>
+<li><strong>img_format</strong> – the format of the images, can only take the values ‘png’ and ‘jpg’</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Crowd_counting.augmentation.reverse_and_bright">
+<code class="descclassname">Crowd_counting.augmentation.</code><code class="descname">reverse_and_bright</code><span class="sig-paren">(</span><em>img_paths</em>, <em>GT_paths</em>, <em>register=True</em>, <em>img_format='jpg'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Crowd_counting/augmentation.html#reverse_and_bright"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Crowd_counting.augmentation.reverse_and_bright" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the brightness of list of images and flip them horizontally, save the new images and ground_truth in the specified directory</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>img_paths</strong> (<em>list</em>) – list of paths to the images to be augmented, as generated by the dir_to_list function</li>
+<li><strong>GT_paths</strong> (<em>list</em>) – list of paths to the Grount truth corresponding to the images to be augmented, as generated by the dir_to_list function</li>
+<li><strong>img_format</strong> – the format of the images, can only take the values ‘png’ and ‘jpg’</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="al_train.html" class="btn btn-neutral float-left" title="Load model and make predictions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ground_truth.html" class="btn btn-neutral float-right" title="Ground_truth generation Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Louis Robins and Henri Collin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Model Module &mdash; Crowd_counting 0.6 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Training Module" href="train.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Crowd_counting
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="new_train.html">Train a new model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="al_train.html">Load model and make predictions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="augmentation.html">Data augmentation Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ground_truth.html">Ground_truth generation Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="train.html">Training Module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Model Module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Crowd_counting</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Model Module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/model.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="module-Crowd_counting.model">
+<span id="model-module"></span><span id="rst-model"></span><h1>Model Module<a class="headerlink" href="#module-Crowd_counting.model" title="Permalink to this headline">¶</a></h1>
+<p>This module contain all methods to</p>
+<dl class="class">
+<dt id="Crowd_counting.model.CSRNet">
+<em class="property">class </em><code class="descclassname">Crowd_counting.model.</code><code class="descname">CSRNet</code><span class="sig-paren">(</span><em>load_weights=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Crowd_counting/model.html#CSRNet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Crowd_counting.model.CSRNet" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class is representing a CSRNet model</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Crowd_counting.model.evaluate">
+<code class="descclassname">Crowd_counting.model.</code><code class="descname">evaluate</code><span class="sig-paren">(</span><em>model</em>, <em>img_paths</em>, <em>MAE=True</em>, <em>MSE=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Crowd_counting/model.html#evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Crowd_counting.model.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the MSE-MAE of the model on a designated set of images</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>model</strong> – a CSRNet already trained model</li>
+<li><strong>image_paths</strong> (<em>list</em>) – paths to the images used for evaluation</li>
+<li><strong>MAE</strong> (<em>bool</em>) – If set to False the MAE is not computed</li>
+<li><strong>MSE</strong> (<em>bool</em>) – If set to False the MSE is not computed</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the MAE of the model (0 if the MAE parameter is set to False)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the MSE of the model (0 if the MSE parameter is set to False)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Crowd_counting.model.load_model">
+<code class="descclassname">Crowd_counting.model.</code><code class="descname">load_model</code><span class="sig-paren">(</span><em>model_path</em>, <em>use_gpu=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Crowd_counting/model.html#load_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Crowd_counting.model.load_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a stored already trained CSRNet model.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>model_path</strong> – the path to the stored model</li>
+<li><strong>use_gpu</strong> – if the model is loaded on gpu or cpu</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the loaded model</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#Crowd_counting.model.CSRNet" title="Crowd_counting.model.CSRNet">CSRNet</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Crowd_counting.model.load_pretrained">
+<code class="descclassname">Crowd_counting.model.</code><code class="descname">load_pretrained</code><span class="sig-paren">(</span><em>model_name='shangaiA'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Crowd_counting/model.html#load_pretrained"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Crowd_counting.model.load_pretrained" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load one of the already pretrained models of the librairy</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>model_name</strong> – name of the pretrained model to be charged. Can be shangaiA, shangaiB, A10</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the loaded model</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#Crowd_counting.model.CSRNet" title="Crowd_counting.model.CSRNet">CSRNet</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Crowd_counting.model.predict">
+<code class="descclassname">Crowd_counting.model.</code><code class="descname">predict</code><span class="sig-paren">(</span><em>model</em>, <em>image_path</em>, <em>use_gpu=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Crowd_counting/model.html#predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Crowd_counting.model.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predict the stimated number of people and density map from an image</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>model</strong> – a CSRNet already trained model</li>
+<li><strong>image_path</strong> – path to the image to be predicted</li>
+<li><strong>use_gpu</strong> – if the model is loaded on gpu or cpu</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the estimated number of people</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the estimated density map</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Crowd_counting.model.visualize">
+<code class="descclassname">Crowd_counting.model.</code><code class="descname">visualize</code><span class="sig-paren">(</span><em>image</em>, <em>ground_truth=None</em>, <em>model=None</em>, <em>figsize=(100</em>, <em>100)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Crowd_counting/model.html#visualize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Crowd_counting.model.visualize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visualize an image and eventually its ground_truth and one model prediction using matplotlib</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>image</strong> – the base image</li>
+<li><strong>ground_truth</strong> – a .h5 file corresponding to the ground_truth of the image</li>
+<li><strong>model</strong> – a model used to make a prediction on the base image</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="train.html" class="btn btn-neutral float-left" title="Training Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Louis Robins and Henri Collin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

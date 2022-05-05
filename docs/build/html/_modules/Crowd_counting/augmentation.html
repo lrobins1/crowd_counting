@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crowd_counting.augmentation &mdash; Crowd_counting 0.6 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Crowd_counting
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../new_train.html">Train a new model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../al_train.html">Load model and make predictions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../augmentation.html">Data augmentation Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ground_truth.html">Ground_truth generation Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../train.html">Training Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../model.html">Model Module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Crowd_counting</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>Crowd_counting.augmentation</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for Crowd_counting.augmentation</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Set of functions used to perform data augmentation on images and their assosiated .mat files&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">tensorflow</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.preprocessing.image</span> <span class="kn">import</span> <span class="n">ImageDataGenerator</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">scipy.io</span> <span class="k">as</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+
+<span class="c1">#améliorations : saving directory + no saving (list return)</span>
+
+<div class="viewcode-block" id="dir_to_list"><a class="viewcode-back" href="../../augmentation.html#Crowd_counting.augmentation.dir_to_list">[docs]</a><span class="k">def</span> <span class="nf">dir_to_list</span><span class="p">(</span><span class="n">img_dir</span><span class="p">,</span><span class="n">img_format</span> <span class="o">=</span><span class="s1">&#39;jpg&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create lists of paths to the ground truth and images, as to be used for image augmentation, ground truth generation and model training.</span>
+<span class="sd">    For the list to be created correctly, the directory should have the following form : </span>
+<span class="sd">    </span>
+<span class="sd">    Project</span>
+<span class="sd">    </span>
+<span class="sd">      +--images</span>
+<span class="sd">       </span>
+<span class="sd">        + all images</span>
+<span class="sd">    </span>
+<span class="sd">      +--ground_truth</span>
+<span class="sd">        </span>
+<span class="sd">        + all .mat files</span>
+<span class="sd">    </span>
+<span class="sd">    :param str img_dir: path to the directory where the images are stored</span>
+<span class="sd">    :param img_format: the format of the images, can only take the values &#39;png&#39; and &#39;jpg&#39;</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    :returns: 2 lists: the first one contain the paths to the images, the second one contain the paths to the associated ground truths (the Ground truth at index i correspond to the image at index i in the ifrst list)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">img_paths</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">GT_paths</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="c1">#img into list</span>
+    <span class="k">if</span> <span class="n">img_format</span> <span class="o">==</span> <span class="s1">&#39;jpg&#39;</span><span class="p">:</span>
+      <span class="k">for</span> <span class="n">img_path</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">img_dir</span><span class="p">,</span> <span class="s1">&#39;*.jpg&#39;</span><span class="p">)):</span>
+          <span class="n">img_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span>
+          <span class="n">GT_path</span> <span class="o">=</span> <span class="n">img_path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;images&#39;</span><span class="p">,</span><span class="s1">&#39;ground_truth&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;.mat&#39;</span><span class="p">)</span>
+          <span class="n">GT_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">GT_path</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">img_format</span> <span class="o">==</span> <span class="s1">&#39;png&#39;</span><span class="p">:</span>
+      <span class="k">for</span> <span class="n">img_path</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">img_dir</span><span class="p">,</span> <span class="s1">&#39;*.png&#39;</span><span class="p">)):</span>
+          <span class="n">img_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span>
+          <span class="n">GT_path</span> <span class="o">=</span> <span class="n">img_path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;images&#39;</span><span class="p">,</span><span class="s1">&#39;ground_truth&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.png&#39;</span><span class="p">,</span><span class="s1">&#39;.mat&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;A10&#39;</span><span class="p">,</span><span class="s1">&#39;GT_A10&#39;</span><span class="p">)</span>
+          <span class="n">GT_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">GT_path</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">img_paths</span><span class="p">,</span> <span class="n">GT_paths</span></div>
+
+<div class="viewcode-block" id="Horizontal_Flip"><a class="viewcode-back" href="../../augmentation.html#Crowd_counting.augmentation.Horizontal_Flip">[docs]</a><span class="k">def</span> <span class="nf">Horizontal_Flip</span><span class="p">(</span><span class="n">img_paths</span><span class="p">,</span><span class="n">GT_paths</span><span class="p">,</span><span class="n">register</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">img_format</span> <span class="o">=</span> <span class="s1">&#39;jpg&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Flip a list of images horizontally and change the .mat file assosiated with it, save the new images and ground_truth in the specified directory</span>
+<span class="sd">    </span>
+<span class="sd">    :param list img_paths: list of paths to the images to be augmented, as generated by the dir_to_list function</span>
+<span class="sd">    :param list GT_paths: list of paths to the Grount truth corresponding to the images to be augmented, as generated by the dir_to_list function</span>
+<span class="sd">    :param img_format: the format of the images, can only take the values &#39;png&#39; and &#39;jpg&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">assert</span> <span class="n">img_format</span> <span class="o">==</span> <span class="s1">&#39;jpg&#39;</span> <span class="ow">or</span> <span class="n">img_format</span> <span class="o">==</span> <span class="s1">&#39;png&#39;</span><span class="p">,</span> <span class="s1">&#39;img_format can only take the values : jpg, png&#39;</span>
+  
+    <span class="k">for</span> <span class="n">img_path</span><span class="p">,</span><span class="n">GT_path</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">img_paths</span><span class="p">,</span> <span class="n">GT_paths</span><span class="p">)):</span>
+        <span class="c1">#load</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">GT_path</span><span class="p">)</span>
+        <span class="c1">#flip img</span>
+        <span class="n">new_im</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">img</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1">#flip coordinates in .mat</span>
+        <span class="n">information</span> <span class="o">=</span> <span class="n">mat</span><span class="p">[</span><span class="s1">&#39;image_info&#39;</span><span class="p">]</span>
+        <span class="n">i</span><span class="o">=</span><span class="n">information</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">i</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
+          <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1">#save image</span>
+        <span class="k">if</span> <span class="n">register</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>
+          <span class="k">if</span> <span class="n">img_format</span> <span class="o">==</span> <span class="s1">&#39;jpg&#39;</span><span class="p">:</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">img_path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;_reverse.jpg&#39;</span><span class="p">)</span>
+          <span class="k">if</span> <span class="n">img_format</span> <span class="o">==</span> <span class="s1">&#39;png&#39;</span><span class="p">:</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">img_path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.png&#39;</span><span class="p">,</span><span class="s1">&#39;_reverse.png&#39;</span><span class="p">)</span>
+        
+          <span class="n">matname</span> <span class="o">=</span> <span class="n">GT_path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.mat&#39;</span><span class="p">,</span><span class="s1">&#39;_reverse.mat&#39;</span><span class="p">)</span>
+          <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">new_im</span><span class="p">)</span>
+          <span class="n">io</span><span class="o">.</span><span class="n">savemat</span><span class="p">(</span><span class="n">matname</span><span class="p">,</span> <span class="n">mat</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="brightness_variation"><a class="viewcode-back" href="../../augmentation.html#Crowd_counting.augmentation.brightness_variation">[docs]</a><span class="k">def</span> <span class="nf">brightness_variation</span><span class="p">(</span><span class="n">img_paths</span><span class="p">,</span><span class="n">GT_paths</span><span class="p">,</span><span class="n">register</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">img_format</span> <span class="o">=</span> <span class="s1">&#39;jpg&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Change the brightness of list of images, save the new images and ground_truth in the specified directory</span>
+<span class="sd">    </span>
+<span class="sd">    :param list img_paths: list of paths to the images to be augmented, as generated by the dir_to_list function</span>
+<span class="sd">    :param list GT_paths: list of paths to the Grount truth corresponding to the images to be augmented, as generated by the dir_to_list function</span>
+<span class="sd">    :param img_format: the format of the images, can only take the values &#39;png&#39; and &#39;jpg&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">assert</span> <span class="n">img_format</span> <span class="o">==</span> <span class="s1">&#39;jpg&#39;</span> <span class="ow">or</span> <span class="n">img_format</span> <span class="o">==</span> <span class="s1">&#39;png&#39;</span><span class="p">,</span> <span class="s1">&#39;img_format can only take the values : jpg, png&#39;</span>
+
+    <span class="n">datagen</span> <span class="o">=</span> <span class="n">ImageDataGenerator</span><span class="p">(</span><span class="n">brightness_range</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">dic</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">img_path</span><span class="p">,</span><span class="n">GT_path</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">img_paths</span><span class="p">,</span> <span class="n">GT_paths</span><span class="p">)):</span>
+      <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span>
+      <span class="n">mat</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">GT_path</span><span class="p">)</span>
+      <span class="n">dic</span><span class="p">[</span><span class="s1">&#39;brightness&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span><span class="mf">0.65</span><span class="p">)</span>
+      <span class="n">new_im</span> <span class="o">=</span> <span class="n">datagen</span><span class="o">.</span><span class="n">apply_transform</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">dic</span><span class="p">)</span>
+
+      <span class="c1">#save image</span>
+      <span class="k">if</span> <span class="n">register</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">img_format</span> <span class="o">==</span> <span class="s1">&#39;jpg&#39;</span><span class="p">:</span>
+          <span class="n">filename</span> <span class="o">=</span> <span class="n">img_path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;_bright.jpg&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">img_format</span> <span class="o">==</span> <span class="s1">&#39;png&#39;</span><span class="p">:</span>
+          <span class="n">filename</span> <span class="o">=</span> <span class="n">img_path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.png&#39;</span><span class="p">,</span><span class="s1">&#39;_bright.png&#39;</span><span class="p">)</span>
+      <span class="n">matname</span> <span class="o">=</span> <span class="n">GT_path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.mat&#39;</span><span class="p">,</span><span class="s1">&#39;_bright.mat&#39;</span><span class="p">)</span>
+      <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">new_im</span><span class="p">)</span>
+      <span class="n">io</span><span class="o">.</span><span class="n">savemat</span><span class="p">(</span><span class="n">matname</span><span class="p">,</span> <span class="n">mat</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="reverse_and_bright"><a class="viewcode-back" href="../../augmentation.html#Crowd_counting.augmentation.reverse_and_bright">[docs]</a><span class="k">def</span> <span class="nf">reverse_and_bright</span><span class="p">(</span><span class="n">img_paths</span><span class="p">,</span><span class="n">GT_paths</span><span class="p">,</span><span class="n">register</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span><span class="n">img_format</span> <span class="o">=</span> <span class="s1">&#39;jpg&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Change the brightness of list of images and flip them horizontally, save the new images and ground_truth in the specified directory</span>
+<span class="sd">    </span>
+<span class="sd">    :param list img_paths: list of paths to the images to be augmented, as generated by the dir_to_list function</span>
+<span class="sd">    :param list GT_paths: list of paths to the Grount truth corresponding to the images to be augmented, as generated by the dir_to_list function</span>
+<span class="sd">    :param img_format: the format of the images, can only take the values &#39;png&#39; and &#39;jpg&#39;</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">img_format</span> <span class="o">==</span> <span class="s1">&#39;jpg&#39;</span> <span class="ow">or</span> <span class="n">img_format</span> <span class="o">==</span> <span class="s1">&#39;png&#39;</span><span class="p">,</span> <span class="s1">&#39;img_format can only take the values : jpg, png&#39;</span>
+    <span class="k">for</span> <span class="n">img_path</span><span class="p">,</span><span class="n">GT_path</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">img_paths</span><span class="p">,</span> <span class="n">GT_paths</span><span class="p">)):</span>
+      <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span>
+      <span class="n">mat</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">GT_path</span><span class="p">)</span>
+      <span class="n">datagen</span> <span class="o">=</span> <span class="n">ImageDataGenerator</span><span class="p">(</span><span class="n">brightness_range</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+      <span class="n">dic</span> <span class="o">=</span> <span class="p">{}</span>
+      <span class="n">new_image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">img</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+      <span class="n">dic</span><span class="p">[</span><span class="s1">&#39;brightness&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span><span class="mf">0.65</span><span class="p">)</span>
+      <span class="n">new_im</span> <span class="o">=</span> <span class="n">datagen</span><span class="o">.</span><span class="n">apply_transform</span><span class="p">(</span><span class="n">new_image</span><span class="p">,</span> <span class="n">dic</span><span class="p">)</span>
+      <span class="c1">#flip coordinates in .mat</span>
+      <span class="n">information</span> <span class="o">=</span> <span class="n">mat</span><span class="p">[</span><span class="s1">&#39;image_info&#39;</span><span class="p">]</span>
+      <span class="n">i</span><span class="o">=</span><span class="n">information</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+      <span class="n">x</span><span class="o">=</span><span class="n">i</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+      <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
+        <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+
+      <span class="k">if</span> <span class="n">register</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">img_format</span> <span class="o">==</span> <span class="s1">&#39;jpg&#39;</span><span class="p">:</span>
+          <span class="n">filename</span> <span class="o">=</span> <span class="n">img_path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;_combine.jpg&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">img_format</span> <span class="o">==</span> <span class="s1">&#39;png&#39;</span><span class="p">:</span>
+          <span class="n">filename</span> <span class="o">=</span> <span class="n">img_path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.png&#39;</span><span class="p">,</span><span class="s1">&#39;_combine.png&#39;</span><span class="p">)</span>
+        
+        <span class="n">matname</span> <span class="o">=</span> <span class="n">GT_path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.mat&#39;</span><span class="p">,</span><span class="s1">&#39;_combine.mat&#39;</span><span class="p">)</span>
+        <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">new_im</span><span class="p">)</span>
+        <span class="n">io</span><span class="o">.</span><span class="n">savemat</span><span class="p">(</span><span class="n">matname</span><span class="p">,</span> <span class="n">mat</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="full_augment"><a class="viewcode-back" href="../../augmentation.html#Crowd_counting.augmentation.full_augment">[docs]</a><span class="k">def</span> <span class="nf">full_augment</span><span class="p">(</span><span class="n">img_paths</span><span class="p">,</span><span class="n">GT_paths</span><span class="p">,</span> <span class="n">img_format</span> <span class="o">=</span> <span class="s1">&#39;jpg&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Perform the three different transformations on a set of images, save the new images and ground_truth in the specified directory</span>
+<span class="sd">    </span>
+<span class="sd">    :param list img_paths: list of paths to the images to be augmented, as generated by the dir_to_list function</span>
+<span class="sd">    :param list GT_paths: list of paths to the Grount truth corresponding to the images to be augmented, as generated by the dir_to_list function</span>
+<span class="sd">    :param img_format: the format of the images, can only take the values &#39;png&#39; and &#39;jpg&#39;</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">Horizontal_Flip</span><span class="p">(</span><span class="n">img_paths</span><span class="p">,</span><span class="n">GT_paths</span><span class="p">,</span><span class="n">img_format</span> <span class="o">=</span> <span class="n">img_format</span><span class="p">)</span>
+    <span class="n">brightness_variation</span><span class="p">(</span><span class="n">img_paths</span><span class="p">,</span><span class="n">GT_paths</span><span class="p">,</span><span class="n">img_format</span> <span class="o">=</span> <span class="n">img_format</span><span class="p">)</span>
+    <span class="n">reverse_and_bright</span><span class="p">(</span><span class="n">img_paths</span><span class="p">,</span><span class="n">GT_paths</span><span class="p">,</span><span class="n">img_format</span> <span class="o">=</span> <span class="n">img_format</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Louis Robins and Henri Collin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

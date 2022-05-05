@@ -195,8 +195,7 @@ def validate(val_list, model, criterion):
     return mae    
         
 def adjust_learning_rate(optimizer, epoch,args,best_prec1):
-    """Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
-    
+    'Sets the learning rate to the initial LR decayed by 10 every 30 epochs'
     
     args.lr = args.original_lr
     
@@ -217,7 +216,6 @@ def adjust_learning_rate(optimizer, epoch,args,best_prec1):
     return args
         
 class AverageMeter(object):
-    """Computes and stores the average and current value"""
     def __init__(self):
         self.reset()
 
@@ -237,7 +235,19 @@ class arg:
   def __init__(self):
     self.task = '0'
 #Autre fonction que MSELOSS ou autre optimizer que SGD peuvent etre implémentés
-def complete_train(datasetpath, modelpath = None, shuffle = True, gpu = True, init_lr = 1e-7, batch_size = 1, momentum = 0.95, decay = 5*1e-4,epochs = 400, workers = 4, img_format = '*.png'):
+def complete_train(datasetpath, modelpath = None, shuffle = True, gpu = True, init_lr = 1e-7, batch_size = 1,epochs = 400, img_format = '*.png'):
+    """
+    Train a CSRNet model based on the received data.
+    
+    :param datasetpath: the path to the folder containing the images
+    :param modelpath: path to a .tar file containing a already trained model
+    :param shuffle: If set to True, the images of the dataset will be shuffled before splitting into train and test set.
+    :param gpu: Use of th GPU to train the model
+    :param init_lr: initial learning rate
+    :param batch_size: batch size 
+    :param epochs: number of epochs of the training
+    :param img_format: the format of the images, can only take the values 'png' and 'jpg'
+    """
     global args,best_prec1
     
     best_prec1 = 1e6
@@ -246,13 +256,13 @@ def complete_train(datasetpath, modelpath = None, shuffle = True, gpu = True, in
     args.lr = 1e-7
     args.batch_size    = batch_size
     args.gpu = gpu
-    args.momentum      = momentum
-    args.decay         = decay
+    args.momentum      =  0.95
+    args.decay         = 5*1e-4
     args.start_epoch   = 0
     args.epochs = epochs
     args.steps         = [-1,1,100,150]
     args.scales        = [1,1,1,1]
-    args.workers = workers
+    args.workers = 4
     args.seed = time.time()
     args.print_freq = 30
     args.pre = modelpath

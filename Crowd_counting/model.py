@@ -1,3 +1,7 @@
+"""
+This module contain all methods to 
+"""
+
 import torch.nn as nn
 import torch
 from torchvision import models
@@ -12,7 +16,12 @@ from torchvision import datasets, transforms
 import pkg_resources
 
 class CSRNet(nn.Module):
+    """
+    This class is representing a CSRNet model 
+    """
     def __init__(self, load_weights=True):
+        """
+        constructor method"""
         super(CSRNet, self).__init__()
         self.seen = 0
         self.frontend_feat = [64, 64, 'M', 128, 128, 'M', 256, 256, 256, 'M', 512, 512, 512]
@@ -26,23 +35,13 @@ class CSRNet(nn.Module):
             #for i in range(len(self.frontend.state_dict().items())):
                 #self.frontend.state_dict().items()[i][1].data[:] = mod.state_dict().items()[i][1].data[:]
             self.frontend.state_dict = mod.state_dict().copy()
+    
     def forward(self,x):
-        '''
-        x_len = x.shape[2] 
-        y_len = x.shape[3]
-        scale_factor = 1
-        if x_len or y_len > 1024:
-            if x_len > y_len:
-                scale_factor = 1024/x_len
-            else:
-                scale_factor = 1024/y_len
-            x = F.interpolate(x, scale_factor=(scale_factor, scale_factor))
-            x = torchvision.transforms.functional.normalize(x,mean=[0.485, 0.456, 0.406],std=[0.229, 0.224, 0.225])
-        '''
         x = self.frontend(x)
         x = self.backend(x)
         x = self.output_layer(x)
         return x
+    
     def _initialize_weights(self):
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
@@ -105,8 +104,9 @@ def load_pretrained(model_name = 'shangaiA'):
     Load one of the already pretrained models of the librairy
     
     
-    :param: name of the pretrained model to be charged. Can be shangaiA, shangaiB, A10
+    :param model_name: name of the pretrained model to be charged. Can be shangaiA, shangaiB, A10
     :returns: the loaded model
+    :rtype: CSRNet
     """
     actual_name = 'models/' + model_name + '.pth.tar'
     model_path = pkg_resources.resource_filename('Crowd_counting', actual_name)
@@ -144,7 +144,9 @@ def visualize(image, ground_truth = None, model = None, figsize = (100,100)):
     """
     Visualize an image and eventually its ground_truth and one model prediction using matplotlib
 
-    :param image:
+    :param image: the base image
+    :param ground_truth: a .h5 file corresponding to the ground_truth of the image
+    :param model: a model used to make a prediction on the base image
     """
 
 
