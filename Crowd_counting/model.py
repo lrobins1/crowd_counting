@@ -113,7 +113,7 @@ def load_pretrained(model_name = 'shangaiA'):
     #model_path = pkg_resources.resource_filename('Crowd_counting', actual_name)
     URL = "https://tfecounintg.000webhostapp.com/A10_SH_DA_C.tar"
     model_path = requests.get(URL)
-    return load_model(model_path)
+    return load_model(model_path.content)
     
   
 #To plot the image density map from the output, use : 
