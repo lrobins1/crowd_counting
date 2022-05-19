@@ -40,6 +40,7 @@ release = '0.6'
 # ones.
 extensions = [
     'readthedocs_ext.readthedocs',
+    'sphinx_toolbox.more_autodoc',
     'sphinx.ext.autodoc',
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
