@@ -5,3 +5,4 @@ matplotlib
 opencv-python
 scipy
 protobuf
+pillow>=6.2.0
