@@ -2,5 +2,5 @@
 
 Model Module
 ===============
-.. automodule:: Crowd_counting.model
+.. automodule:: Crowd_counting/model.py
   :members:

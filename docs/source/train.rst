@@ -2,5 +2,5 @@
 
 Training Module
 ================
-.. automodule:: Crowd_counting.train
+.. automodule:: Crowd_counting/train.py
   :members:
