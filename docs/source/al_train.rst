@@ -14,7 +14,7 @@ Loading a model
 
 The :ref:`rst_model` contain two functions to load models : 
 
-The first one is used to load one of the pretrained models available in the librairy.It can be used as follows.
+The first one is used to load one of the pretrained models available in the librairy. It can be used as follows.
 
 .. code-block:: python
     
