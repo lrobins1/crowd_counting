@@ -2,5 +2,5 @@ numpy>=1.20
 torch
 torchvision
 matplotlib
-cv2
+opencv-python
 scipy
