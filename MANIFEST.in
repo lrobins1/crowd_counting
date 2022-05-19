@@ -1,3 +1,3 @@
 include Crowd_counting/models/shangaiA.pth.tar
 include Crowd_counting/models/shangaiB.pth.tar
-include Crowd_counting/models/A10.pth.tar
+include Crowd_counting/models/A10.tar
