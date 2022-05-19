@@ -4,3 +4,4 @@ torchvision
 matplotlib
 opencv-python
 scipy
+protobuf
