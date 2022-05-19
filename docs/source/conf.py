@@ -185,4 +185,4 @@ epub_exclude_files = ['search.html']
 todo_include_todos = True
 
 #ignore modules that are not intern
-autodoc_mock_imports = ["torch","torchvision","matplotlib","cv2","scipy","numpy=1.20"]
+autodoc_mock_imports = ["numpy==1.20","torch","torchvision","matplotlib","cv2","scipy"]
