@@ -6,7 +6,7 @@
 Crowd counting's documentation!
 ==========================================
 
-The aim of this documentation is to guide anyone that would like to either : 
+The aim of this documentation is to guide anyone that would like to 
 
 * Train a crowd counting model based on the CSRNet architecture on its own datas
 * Use a pretrain model to predict a density map and the number of people on an image

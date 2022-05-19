@@ -3,9 +3,9 @@ Train a new model
 
 Folder structure
 ******************
-To ensure a smooth runnig of all the function during the process, the folder containing the images should be organised as the folowing structure.
-The images should have the format .jpeg or .png, and the ground_truth should have the .mat format.
-The .mat files can be generated based on the images by using this `Matlab script <https://github.com/princenarula222/Crowd_Annotation>`_
+To ensure a smooth runnig of all the functions during the process, the folder containing the images should be organised as the following structure.
+The images should have the format .jpg or .png, and the ground truth should have the .mat format.
+The .mat files can be generated based on images by using this `Matlab script <https://github.com/princenarula222/Crowd_Annotation>`_
 
 | Project
 | ├── images
@@ -15,7 +15,7 @@ The .mat files can be generated based on the images by using this `Matlab script
 |     └── all ground_truth
 | 
 
-The first step is then to load a list of the path to all your images using augentation's dir_to_list function. 
+The first step is then to load a list of the path to all your images using the dir_to_list function. 
 This list will be used in a lot of the following steps.
 
 .. code-block:: python
@@ -27,8 +27,8 @@ This list will be used in a lot of the following steps.
 
 Data augmentation
 ******************
-The :ref:`rst_augment` permits to perform some data augmentation directly on the images and the ground truth.
-Several modifications are available.
+The :ref:`rst_augment` permits to perform some data augmentation directly on the images and their ground truth.
+The different available modifications are detailed on the module's documentation page.
 
 
 Ground_truth generation
@@ -51,7 +51,7 @@ The model is trainable directly in python.
     complete_train('Project/images')
 
 
-The model can be trained via the terminal by following `the creators method <https://github.com/leeyeehoo/CSRNet-pytorch>`_
+The model can also be trained via the terminal by following `the creators method <https://github.com/leeyeehoo/CSRNet-pytorch>`_
 
 
 Model evaluation
