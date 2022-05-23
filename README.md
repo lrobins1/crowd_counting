@@ -13,20 +13,20 @@ Use some of our built-in data augmentation function to get better results.
 
 ## 2) Groundtruth 
 
-Create the GroundTruth based on the annotated training images.  <a href="https://colab.research.google.com/github/lrobins1/crowd_counting/blob/main/exemples/Ground%20Truth%20generation.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+Create the GroundTruth based on the annotated training images.  <a href="https://colab.research.google.com/github/lrobins1/crowd_counting/blob/main/exemples/Lib_demo.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 ## 3) Train the model
 
 
-Train models based on your dataset directly in python : <a href="https://colab.research.google.com/github/lrobins1/crowd_counting/blob/main/exemples/Model_Training.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+Train models based on your dataset directly in python : <a href="https://colab.research.google.com/github/lrobins1/crowd_counting/blob/main/exemples/Lib_demo.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
-Or directly via the terminal : <a href="https://colab.research.google.com/github/lrobins1/crowd_counting/blob/main/exemples/Model_Training.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+Or directly via the terminal : <a href="https://colab.research.google.com/github/lrobins1/crowd_counting/blob/main/exemples/Lib_demo.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 ## 4) Predictions
 
-Run the models on new images to have a reliable density map and the estimation of the number of people on it. <a href="https://colab.research.google.com/github/lrobins1/crowd_counting/blob/main/exemples/Model_testing.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+Run the models on new images to have a reliable density map and the estimation of the number of people on it. <a href="https://colab.research.google.com/github/lrobins1/crowd_counting/blob/main/exemples/Lib_demo.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 
-## Bonus : Export your model to json using [tensorflowjs](https://github.com/tensorflow/tfjs/tree/master/tfjs-converter)  to use is in https://our_website.com for crowd counting 
+## Bonus : Export your model to json using [tensorflowjs](https://github.com/tensorflow/tfjs/tree/master/tfjs-converter)  to use it in javascript, as is in [https://juski07.github.io/livecounting/](https://juski07.github.io/livecounting/) for crowd counting 
 
 <a href="https://colab.research.google.com/github/lrobins1/crowd_counting/blob/main/exemples/Conversion_to_JS.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
