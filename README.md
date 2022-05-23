@@ -1,5 +1,5 @@
 # Crowd Counting
-Crowd_counting is a library to train and use your own crowd counting models using python3 and based on tensorflow.
+Crowd_counting is a library to train and use your own crowd counting models using python3 and based on tensorflow. It was developped in the context of the master Thsesi of Louis Robins and Henri Collin at UCLouvain.
 <p align="center">
 <img src="https://github.com/lrobins1/crowd_counting/blob/main/assets/counting_exemple.png" height="384px">
 </p>
