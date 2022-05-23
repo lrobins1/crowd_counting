@@ -155,15 +155,12 @@ def visualize(image, ground_truth = None, model = None, figsize = (100,100)):
     """
     Visualize an image and eventually its ground_truth and one model prediction using matplotlib
 
-    :param image: the base image
+    :param image: the path to the base image
     :param ground_truth: a .h5 file corresponding to the ground_truth of the image
     :param model: a model used to make a prediction on the base image
     """
 
 
-    if isinstance(image, str):
-      image = Image.open(image)
-  
     if isinstance(ground_truth, str):
       gt_file = h5py.File(ground_truth)
     else: 
