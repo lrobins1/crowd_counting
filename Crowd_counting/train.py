@@ -117,7 +117,7 @@ def train(train_list, model, criterion, optimizer, epoch, args, best_prec1):
     
     
     train_loader = torch.utils.data.DataLoader(
-        dataset.listDataset(train_list,
+        listDataset(train_list,
                        shuffle=True,
                        transform=transforms.Compose([
                        transforms.ToTensor(),transforms.Normalize(mean=[0.485, 0.456, 0.406],
@@ -169,7 +169,7 @@ def train(train_list, model, criterion, optimizer, epoch, args, best_prec1):
 def validate(val_list, model, criterion):
     print ('begin test')
     test_loader = torch.utils.data.DataLoader(
-    dataset.listDataset(val_list,
+    listDataset(val_list,
                    shuffle=False,
                    transform=transforms.Compose([
                        transforms.ToTensor(),transforms.Normalize(mean=[0.485, 0.456, 0.406],
