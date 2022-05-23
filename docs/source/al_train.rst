@@ -29,7 +29,7 @@ The second one is used to load a model from a .tar archive as produced while tra
 .. code-block:: python
     
     from Crowd_counting.model import *
-    my_model = load_model('path/to/archie.tar')
+    my_model = load_model('path/to/archive.tar')
 
 Make predictions
 *****************

@@ -4,7 +4,7 @@
 Installation
 ============
 
-First make sure that you have git-lfs installed and correcly configured. This is used to download the pretrain models weights that are heavier than 100MB during the librairy installation.
+First make sure that you have git-lfs installed and correcly configured. This is used to download the pretrain models weights that are heavier than 100MB during the library installation.
 This step is not needed if you don't want to load already trained models.
 
 .. code-block:: bash
