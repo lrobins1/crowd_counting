@@ -6,6 +6,9 @@
 Crowd counting's documentation!
 ==========================================
 
+Crowd_counting is a library to train and use your own crowd counting models using python3 and based on tensorflow. It was developped in the context of the master Thesis of Louis Robins and Henri Collin at UCLouvain.
+The source code is available on `github <https://github.com/lrobins1/crowd_counting>`_ .
+
 The aim of this documentation is to guide anyone that would like to 
 
 * Train a crowd counting model based on the CSRNet architecture on its own datas
