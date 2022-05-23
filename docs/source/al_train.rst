@@ -4,10 +4,13 @@ Load model and make predictions
 Available pretrained Models
 ****************************
 
-Several pretrained model are already ready to be loaded.
+Three pretrained models are available to be loaded directly from the librairy : 
 
-Partie à voir en fonction des modèles qu'on rend dispo
+- shanghaiA : This model is trained on the Shanghai dataset part A. It is best suited for really crowded scenes.
 
+- shanghaiB : This model is trained on the Shanhai dataset part B. It is best suited for middle crowded scenes.
+
+- A10 : This model is a model trained on the A10 auditorium in Louvain-la-neuve. It is best suited to count the number of people in any auditorium.
 
 Loading a model
 *****************

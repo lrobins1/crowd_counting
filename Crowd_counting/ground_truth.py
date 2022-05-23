@@ -15,8 +15,6 @@ from matplotlib import pyplot as plt
 def gaussian_filter_density(gt):
     """
     This function create the density map by using adaptive kernels
-    
-    this is borrowed from https://github.com/davideverona/deep-crowd-counting_crowdnet
 
     :param gt: path to a .mat file
 
