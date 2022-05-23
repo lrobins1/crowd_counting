@@ -16,7 +16,7 @@ from torchvision import datasets, transforms
 import pkg_resources
 
 class CSRNet(nn.Module):
-"""This class represents a CSRNet model"""
+    """This class represents a CSRNet model"""
     def __init__(self, load_weights=False):
         super(CSRNet, self).__init__()
         self.seen = 0
