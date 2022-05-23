@@ -22,8 +22,8 @@ class CSRNet(nn.Module):
         self.seen = 0
         self.frontend_feat = [64, 64, 'M', 128, 128, 'M', 256, 256, 256, 'M', 512, 512, 512]
         self.backend_feat  = [512, 512, 512,256,128,64]
-        self.frontend = make_layers(self.frontend_feat)
-        self.backend = make_layers(self.backend_feat,in_channels = 512,dilation = True)
+        self.frontend = _make_layers(self.frontend_feat)
+        self.backend = _make_layers(self.backend_feat,in_channels = 512,dilation = True)
         self.output_layer = nn.Conv2d(64, 1, kernel_size=1)
         if not load_weights:
             vgg = models.vgg16(pretrained = True)
@@ -68,7 +68,7 @@ class CSRNet(nn.Module):
                 nn.init.normal_(m.weight, 0, 0.01)
                 nn.init.constant_(m.bias, 0)
                 
-    def make_layers(cfg, in_channels = 3,batch_norm=False,dilation = False):
+def _make_layers(cfg, in_channels = 3,batch_norm=False,dilation = False):
         if dilation:
             d_rate = 2
         else:
@@ -194,6 +194,8 @@ def visualize(image, ground_truth = None, model = None, figsize = (100,100)):
       plt.axis('off')
       plt.imshow(np.squeeze(output.detach().cpu().numpy(),(0,1)),cmap=CM.jet)
       plt.title("Model prediction : " + str(people_nbr), fontsize=75)
+    
+    plt.show()
      
 def evaluate(model,img_paths, MAE=True, MSE=True):
     """

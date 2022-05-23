@@ -74,16 +74,14 @@ def Horizontal_Flip(img_paths,GT_paths, img_format = 'jpg'):
         for j in range(len(x[0])):
           x[0][j][0]= img.shape[1]-x[0][j][0]
 
-        #save image
-        if register==True:
-          if img_format == 'jpg':
-            filename = img_path.replace('.jpg','_reverse.jpg')
-          if img_format == 'png':
-            filename = img_path.replace('.png','_reverse.png')
-        
-          matname = GT_path.replace('.mat','_reverse.mat')
-          cv2.imwrite(filename, new_im)
-          io.savemat(matname, mat)
+        if img_format == 'jpg':
+          filename = img_path.replace('.jpg','_reverse.jpg')
+        if img_format == 'png':
+          filename = img_path.replace('.png','_reverse.png')
+      
+        matname = GT_path.replace('.mat','_reverse.mat')
+        cv2.imwrite(filename, new_im)
+        io.savemat(matname, mat)
 
 def brightness_variation(img_paths,GT_paths, img_format = 'jpg'):
     """Change the brightness of list of images, save the new images and ground_truth in the specified directory
@@ -104,14 +102,13 @@ def brightness_variation(img_paths,GT_paths, img_format = 'jpg'):
       new_im = datagen.apply_transform(img, dic)
 
       #save image
-      if register == True:
-        if img_format == 'jpg':
-          filename = img_path.replace('.jpg','_bright.jpg')
-        if img_format == 'png':
-          filename = img_path.replace('.png','_bright.png')
-      matname = GT_path.replace('.mat','_bright.mat')
-      cv2.imwrite(filename, new_im)
-      io.savemat(matname, mat)
+      if img_format == 'jpg':
+        filename = img_path.replace('.jpg','_bright.jpg')
+      if img_format == 'png':
+        filename = img_path.replace('.png','_bright.png')
+    matname = GT_path.replace('.mat','_bright.mat')
+    cv2.imwrite(filename, new_im)
+    io.savemat(matname, mat)
 
 def reverse_and_bright(img_paths,GT_paths,img_format = 'jpg'):
     """Change the brightness of list of images and flip them horizontally, save the new images and ground_truth in the specified directory
@@ -139,15 +136,15 @@ def reverse_and_bright(img_paths,GT_paths,img_format = 'jpg'):
         x[0][j][0]= img.shape[1]-x[0][j][0]
 
 
-      if register==True:
-        if img_format == 'jpg':
-          filename = img_path.replace('.jpg','_combine.jpg')
-        if img_format == 'png':
-          filename = img_path.replace('.png','_combine.png')
+      
+      if img_format == 'jpg':
+        filename = img_path.replace('.jpg','_combine.jpg')
+      if img_format == 'png':
+        filename = img_path.replace('.png','_combine.png')
         
-        matname = GT_path.replace('.mat','_combine.mat')
-        cv2.imwrite(filename, new_im)
-        io.savemat(matname, mat)
+      matname = GT_path.replace('.mat','_combine.mat')
+      cv2.imwrite(filename, new_im)
+      io.savemat(matname, mat)
 
 def full_augment(img_paths,GT_paths, img_format = 'jpg'):
     """Perform the three different transformations on a set of images, save the new images and ground_truth in the specified directory
