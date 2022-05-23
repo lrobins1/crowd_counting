@@ -221,7 +221,7 @@ def evaluate(model,img_paths, MAE=True, MSE=True):
                     ])
     for i in range(length):
       img = transform(Image.open(img_paths[i]).convert('RGB')).cuda()
-      gt_file = h5py.File(img_paths[i].replace('.png','.h5').replace('images','ground_truth'),'r')
+      gt_file = h5py.File(img_paths[i].replace('.png','.h5').replace('.jpg','.h5').replace('images','ground_truth'),'r')
       groundtruth = np.asarray(gt_file['density'])
       output = model(img.unsqueeze(0))
       error = output.detach().cpu().sum().numpy()-np.sum(groundtruth)
