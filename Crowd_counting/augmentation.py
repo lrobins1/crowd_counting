@@ -10,9 +10,8 @@ import numpy as np
 import random
 
 
-#améliorations : saving directory + no saving (list return)
 
-def dir_to_list(img_dir,img_format ='jpg'):
+def dir_to_list(img_dir,prefix =('IMG','GT_IMG'),img_format ='jpg'):
     """Create lists of paths to the ground truth and images, as to be used for image augmentation, ground truth generation and model training.
     For the list to be created correctly, the directory should have the following form : 
     
@@ -27,6 +26,7 @@ def dir_to_list(img_dir,img_format ='jpg'):
         + all .mat files
     
     :param str img_dir: path to the directory where the images are stored
+    :param prefix: tuple containing two strings if the name of the images and ground_truth files are different (eg : GT_IMG_3.mat is the ground_truth file corresponding to IMG_3.png, then prefix = ('IMG','GT_IMG'))
     :param img_format: the format of the images, can only take the values 'png' and 'jpg'
     
     
@@ -40,13 +40,13 @@ def dir_to_list(img_dir,img_format ='jpg'):
     if img_format == 'jpg':
       for img_path in glob.glob(os.path.join(img_dir, '*.jpg')):
           img_paths.append(img_path)
-          GT_path = img_path.replace('images','ground_truth').replace('.jpg','.mat')
+          GT_path = img_path.replace('images','ground_truth').replace('.jpg','.mat').replace(prefix[0],prefix[1])
           GT_paths.append(GT_path)
     
     if img_format == 'png':
       for img_path in glob.glob(os.path.join(img_dir, '*.png')):
           img_paths.append(img_path)
-          GT_path = img_path.replace('images','ground_truth').replace('.png','.mat').replace('A10','GT_A10')
+          GT_path = img_path.replace('images','ground_truth').replace('.png','.mat').replace(prefix[0],prefix[1])
           GT_paths.append(GT_path)
     
     return img_paths, GT_paths

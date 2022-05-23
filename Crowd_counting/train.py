@@ -235,7 +235,7 @@ class arg:
   def __init__(self):
     self.task = '0'
 #Autre fonction que MSELOSS ou autre optimizer que SGD peuvent etre implémentés
-def complete_train(datasetpath, modelpath = None, shuffle = True, gpu = True, init_lr = 1e-7, batch_size = 1,epochs = 400, img_format = '*.png'):
+def complete_train(datasetpath, modelpath = None, shuffle = True, gpu = True, init_lr = 1e-7, batch_size = 1,epochs = 400, img_format = '*.png',filename ='./checkpoint.pth.tar',best_model='./model_best.pth.tar'):
     """
     Train a CSRNet model based on the received data.
     
@@ -247,6 +247,8 @@ def complete_train(datasetpath, modelpath = None, shuffle = True, gpu = True, in
     :param batch_size: batch size 
     :param epochs: number of epochs of the training
     :param img_format: the format of the images, can only take the values 'png' and 'jpg'
+    :param filename: path and name where the checkpoint file will be saved after each epoch (must be a .tar file)
+    :param best_model: path and name where the best model (the best MAE on the test set) will be saved (must be a .tar file)
     """
     global args,best_prec1
     
@@ -320,7 +322,7 @@ def complete_train(datasetpath, modelpath = None, shuffle = True, gpu = True, in
             'state_dict': model.state_dict(),
             'best_prec1': best_prec1,
             'optimizer' : optimizer.state_dict(),
-        }, is_best,args.task)
+        }, is_best,args.task,filename,best_model)
         
 if __name__ == '__main__':
     main()        

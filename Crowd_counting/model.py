@@ -16,12 +16,8 @@ from torchvision import datasets, transforms
 import pkg_resources
 
 class CSRNet(nn.Module):
-    """
-    This class is representing a CSRNet model 
-    """
-    def __init__(self, load_weights=True):
-        """
-        constructor method"""
+"""This class represents a CSRNet model"""
+    def __init__(self, load_weights=False):
         super(CSRNet, self).__init__()
         self.seen = 0
         self.frontend_feat = [64, 64, 'M', 128, 128, 'M', 256, 256, 256, 'M', 512, 512, 512]
@@ -30,18 +26,35 @@ class CSRNet(nn.Module):
         self.backend = make_layers(self.backend_feat,in_channels = 512,dilation = True)
         self.output_layer = nn.Conv2d(64, 1, kernel_size=1)
         if not load_weights:
-            mod = models.vgg16(pretrained = True)
-            self._initialize_weights()
-            #for i in range(len(self.frontend.state_dict().items())):
-                #self.frontend.state_dict().items()[i][1].data[:] = mod.state_dict().items()[i][1].data[:]
-            self.frontend.state_dict = mod.state_dict().copy()
-    
+            vgg = models.vgg16(pretrained = True)
+            vgg_dict= vgg.state_dict()
+            front_dict = self.frontend.state_dict()
+            #self._initialize_weights()
+            model_dict = []
+            for key in front_dict:
+               model_dict.append("features."+ key)
+            # 1. filter out unnecessary keys
+            vgg_dict = {k: v for k, v in vgg_dict.items() if k in model_dict}
+            
+            vgg_dict_update = {}
+            for key in vgg_dict.keys():
+                splits = key.split(".")
+                newkey = splits[1] + "." + splits[2]
+                vgg_dict_update[newkey] = vgg_dict[key] 
+                
+            # 2. overwrite entries in the existing state dict
+            front_dict.update(vgg_dict_update)
+            
+            # 3. load the new state dict
+            self.frontend.load_state_dict(front_dict)
+        
+            
     def forward(self,x):
         x = self.frontend(x)
         x = self.backend(x)
         x = self.output_layer(x)
         return x
-    
+        
     def _initialize_weights(self):
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
@@ -54,27 +67,26 @@ class CSRNet(nn.Module):
             elif isinstance(m, nn.Linear):
                 nn.init.normal_(m.weight, 0, 0.01)
                 nn.init.constant_(m.bias, 0)
-            
-def make_layers(cfg, in_channels = 3,batch_norm=False,dilation = False):
-    if dilation:
-        d_rate = 2
-    else:
-        d_rate = 1
-    layers = []
-    for v in cfg:
-        if v == 'M':
-            layers += [nn.MaxPool2d(kernel_size=2, stride=2)]
+                
+    def make_layers(cfg, in_channels = 3,batch_norm=False,dilation = False):
+        if dilation:
+            d_rate = 2
         else:
-            conv2d = nn.Conv2d(in_channels, v, kernel_size=3, padding=d_rate,dilation = d_rate)
-            if batch_norm:
-                layers += [conv2d, nn.BatchNorm2d(v), nn.ReLU(inplace=True)]
+            d_rate = 1
+        layers = []
+        for v in cfg:
+            if v == 'M':
+                layers += [nn.MaxPool2d(kernel_size=2, stride=2)]
             else:
-                layers += [conv2d, nn.ReLU(inplace=True)]
-            in_channels = v
-    return nn.Sequential(*layers)
+                conv2d = nn.Conv2d(in_channels, v, kernel_size=3, padding=d_rate,dilation = d_rate)
+                if batch_norm:
+                    layers += [conv2d, nn.BatchNorm2d(v), nn.ReLU(inplace=True)]
+                else:
+                    layers += [conv2d, nn.ReLU(inplace=True)]
+                in_channels = v
+        return nn.Sequential(*layers)
     
-#return the loaded model located at model_path (or the basic shangai partAmodel if no path is given ) 
-#using gpu or using cpu (if the use_gpu parameter is set to False)
+
 def load_model(model_path, use_gpu = True):
     """
     Load a stored already trained CSRNet model.
@@ -109,15 +121,13 @@ def load_pretrained(model_name = 'shangaiA'):
     :rtype: CSRNet
     """
     import requests
-    #actual_name = 'models/' + model_name + '.pth.tar'
-    #model_path = pkg_resources.resource_filename('Crowd_counting', actual_name)
-    URL = "https://tfecounintg.000webhostapp.com/A10_SH_DA_C.tar"
-    model_path = requests.get(URL)
+    actual_name = 'models/' + model_name + '.pth.tar'
+    model_path = pkg_resources.resource_filename('Crowd_counting', actual_name)
+    #URL = "https://tfecounintg.000webhostapp.com/A10_SH_DA_C.tar"
+    #model_path = requests.get(URL)
     return load_model(model_path.content)
     
-  
-#To plot the image density map from the output, use : 
-#plt.imshow(np.squeeze(output.detach().cpu().numpy(),(0,1)),cmap=CM.jet)
+
 def predict(model,image_path, use_gpu = True):
     """
     Predict the stimated number of people and density map from an image
@@ -141,8 +151,6 @@ def predict(model,image_path, use_gpu = True):
     people_nbr = int(output.detach().cpu().sum().numpy())
     return people_nbr, output 
   
-#amelioration : take lists 
-#imag = PIL image or path to image
 def visualize(image, ground_truth = None, model = None, figsize = (100,100)):
     """
     Visualize an image and eventually its ground_truth and one model prediction using matplotlib
@@ -187,7 +195,6 @@ def visualize(image, ground_truth = None, model = None, figsize = (100,100)):
       plt.imshow(np.squeeze(output.detach().cpu().numpy(),(0,1)),cmap=CM.jet)
       plt.title("Model prediction : " + str(people_nbr), fontsize=75)
      
-#calculate and print the MAE of the models
 def evaluate(model,img_paths, MAE=True, MSE=True):
     """
     Compute the MSE-MAE of the model on a designated set of images 
