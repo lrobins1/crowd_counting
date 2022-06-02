@@ -14,6 +14,7 @@ from .image import *
 from matplotlib import cm as CM
 from torchvision import datasets, transforms
 import pkg_resources
+import io
 
 class CSRNet(nn.Module):
     """This class represents a CSRNet model"""
@@ -111,7 +112,7 @@ def load_model(model_path, use_gpu = True):
     model.load_state_dict(checkpoint['state_dict'])
     return model
  
-def load_pretrained(model_name = 'shangaiA'):
+def load_pretrained(model_name = 'shanghaiA'):
     """
     Load one of the already pretrained models of the librairy
     
@@ -123,9 +124,10 @@ def load_pretrained(model_name = 'shangaiA'):
     import requests
     #actual_name = 'models/' + model_name + '.pth.tar'
     #model_path = pkg_resources.resource_filename('Crowd_counting', actual_name)
-    URL = "https://tfecounintg.000webhostapp.com/PartAmodel_best.pth.tar"
+    URL = "https://tfecounting.000webhostapp.com/" + model_name + ".pth.tar"
     model_path = requests.get(URL)
-    return load_model(model_path.content)
+    stream = io.BytesIO(model_path.content)
+    return load_model(stream)
     
 
 def predict(model,image_path, use_gpu = True):
