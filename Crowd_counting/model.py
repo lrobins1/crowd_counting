@@ -125,7 +125,6 @@ def load_pretrained(model_name = 'shanghaiA'):
     #actual_name = 'models/' + model_name + '.pth.tar'
     #model_path = pkg_resources.resource_filename('Crowd_counting', actual_name)
     URL = 'https://tfecounting.000webhostapp.com/' + model_name + '.pth.tar'
-    print(URL)
     model_path = requests.get(URL)
     stream = io.BytesIO(model_path.content)
     return load_model(stream)
