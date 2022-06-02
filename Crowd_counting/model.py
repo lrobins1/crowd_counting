@@ -121,10 +121,10 @@ def load_pretrained(model_name = 'shangaiA'):
     :rtype: CSRNet
     """
     import requests
-    actual_name = 'models/' + model_name + '.pth.tar'
-    model_path = pkg_resources.resource_filename('Crowd_counting', actual_name)
-    #URL = "https://tfecounintg.000webhostapp.com/A10_SH_DA_C.tar"
-    #model_path = requests.get(URL)
+    #actual_name = 'models/' + model_name + '.pth.tar'
+    #model_path = pkg_resources.resource_filename('Crowd_counting', actual_name)
+    URL = "https://tfecounintg.000webhostapp.com/A10_SH_DA_C.tar"
+    model_path = requests.get(URL)
     return load_model(model_path.content)
     
 
