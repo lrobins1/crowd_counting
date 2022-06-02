@@ -117,7 +117,7 @@ def load_pretrained(model_name = 'shanghaiA'):
     Load one of the already pretrained models of the librairy
     
     
-    :param model_name: name of the pretrained model to be charged. Can be shangaiA, shangaiB, A10
+    :param model_name: name of the pretrained model to be charged. Can be shanghaiA, shanghaiB, A10
     :returns: the loaded model
     :rtype: CSRNet
     """
